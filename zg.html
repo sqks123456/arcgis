@@ -1,0 +1,130 @@
+   <!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
+    <title>Intro to MapView - Create a 2D map | Sample | ArcGIS Maps SDK for JavaScript 4.29</title>
+    <style>
+      html,
+      body,
+      
+         #mapViewDiv {
+            height: 90vh; 
+            margin-top: 60px; 
+        }
+    
+       #header {
+            background-color: #f8f8f8; 
+            padding: 10px;
+            text-align: center;
+            position: fixed; 
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        }
+
+    #basemapGallery {
+      height: 20vh; 
+    }
+      
+        #viewDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        width: 100%;
+      }
+      
+    </style>
+
+    <link rel="stylesheet" href="https://js.arcgis.com/4.29/esri/themes/light/main.css" />
+    <script src="https://js.arcgis.com/4.29/"></script>
+
+    <script>
+      require(["esri/Map", 
+      "esri/views/MapView",
+      "esri/layers/FeatureLayer",
+      "esri/layers/TileLayer",
+      "esri/widgets/Legend",
+      "esri/widgets/ScaleBar",
+      "esri/widgets/Search",
+      "esri/widgets/LayerList",
+      "esri/widgets/BasemapGallery",
+      "esri/analysis/AreaMeasurementAnalysis",
+      "esri/geometry/Point",
+      "esri/PopupTemplate"
+      ],(Map, MapView,FeatureLayer,TileLayer,Legend,ScaleBar,Search,LayerList,BasemapGallery,AreaMeasurementAnalysis,Point,PopupTemplate) => {
+    
+        
+      const flayer = new FeatureLayer({
+     url: "https://www.geosceneonline.cn/server/rest/services/Hosted/中国气候3/FeatureServer"});
+    
+      let tiledlayer = new TileLayer({
+    url: "https://www.geosceneonline.cn/server/rest/services/Hosted/土地利用类型1980_WTL1/MapServer"});
+        
+        const map = new Map({
+          basemap: "topo-vector",
+          layers:[flayer,tiledlayer]
+        });
+
+        const view = new MapView({
+          container: "viewDiv",
+          map: map,
+          zoom: 4,
+          center: [116, 30] // longitude, latitude
+        });
+        
+       let legend = new Legend({
+          view: view,
+          layer:flayer
+       });
+
+      view.ui.add(legend, "bottom-right");
+      let scaleBar = new ScaleBar({
+          view: view
+      });
+      view.ui.add(scaleBar, {
+        position: "bottom-left"
+      });
+      const searchWidget = new Search({
+      view: view
+      });
+      view.ui.add(searchWidget, {
+        position: "top-left",
+        index: 2
+      });
+      let layerList = new LayerList({
+          view: view
+      });
+      view.ui.add(layerList, {
+        position: "top-left"
+      });
+      let basemapGallery = new BasemapGallery({
+        view: view
+      });
+
+      view.ui.add(basemapGallery, {
+        position: "top-right"
+      });
+      const point1 = new Point({
+        longitude: -118.805,
+        latitude: 34.027
+      });
+
+
+        
+      });
+
+
+    </script>
+
+  </head>
+
+  <body>
+    <div id="viewDiv"></div>
+    <div id="header">
+    <h1>中国气候特征以及土地利用类型</h1>
+      </div>
+  </body>
+</html>
